@@ -29,17 +29,14 @@ namespace littleviewservice.Controllers
         [HttpPost("login")]
         public IActionResult Login([FromBody] UserCredentials credentials)
         {
-            var user = _dbContext.tbl_account
-                .Where(a => a.username == credentials.username && a.password == credentials.password)
-                .FirstOrDefault();
+            var user = _dbContext.tbl_account.SingleOrDefault(a => a.username == credentials.username);
 
-            if (user != null)
+            if (user == null || user.password != credentials.password)
             {
-                return Ok(user.account_type);
-                //return Ok(user);
+                return BadRequest("Invalid username or password");
             }
-            return Ok(null);
-            //return NotFound();
+            return Ok(user.account_type);
+
         }
         public class UserCredentials
         {
