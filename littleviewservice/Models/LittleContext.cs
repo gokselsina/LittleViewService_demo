@@ -11,5 +11,6 @@ namespace littleviewservice.Models
         }
         public DbSet<Little> Littles { get; set; }
         public DbSet<Account> tbl_account { get; set; }
+        public DbSet<Student> tbl_student { get; set; }
     }
 }
