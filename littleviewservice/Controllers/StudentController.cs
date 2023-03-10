@@ -17,13 +17,28 @@ namespace littleviewservice.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Student>>> GetAccount()
+        public async Task<ActionResult<IEnumerable<Student>>> GetStudent()
         {
             if (_dbContext.tbl_student == null)
             {
                 return NotFound();
             }
             return await _dbContext.tbl_student.ToListAsync();
+        }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Student>> GetStudent(int id)
+        {
+            if (_dbContext.tbl_student == null)
+            {
+                return NotFound();
+            }
+            var student = await _dbContext.tbl_student.FindAsync(id);
+            if (student == null)
+            {
+                return NotFound();
+            }
+            return student;
         }
     }
 }
