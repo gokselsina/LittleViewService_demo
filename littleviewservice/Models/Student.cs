@@ -1,11 +1,13 @@
-﻿namespace littleviewservice.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace littleviewservice.Models
 {
     public class Student
     {
-        public int ID { get; set; } 
-        public string? name { get; set; }
-        public string? surname { get; set; }
-        public char gender { get; set; }
+        public int ID { get; } 
+        public string Name { get; set; }
+        public string Surname { get; set; }
+        public char Gender { get; set; }
 
     }
 }

@@ -9,6 +9,11 @@ namespace littleviewservice.Models
         {
 
         }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Student>()
+                .HasKey(s => s.ID); 
+        }
         public DbSet<Little> Littles { get; set; }
         public DbSet<Account> tbl_account { get; set; }
         public DbSet<Student> tbl_student { get; set; }
