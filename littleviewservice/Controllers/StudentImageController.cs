@@ -2,57 +2,56 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using static littleviewservice.Controllers.AccountController;
 
 namespace littleviewservice.Controllers
 {
     [Route("LittleService/[controller]")]
     [ApiController]
-    public class StudentController : ControllerBase
+    public class StudentImageController : ControllerBase
     {
         private readonly LittleContext _dbContext;
 
-        public StudentController(LittleContext dbContext)
+        public StudentImageController(LittleContext dbContext)
         {
             _dbContext = dbContext;
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Student>>> GetStudent()
+        public async Task<ActionResult<IEnumerable<StudentImage>>> GetStudent()
         {
-            if (_dbContext.tbl_student == null)
+            if (_dbContext.tbl_student_image == null)
             {
                 return NotFound();
             }
-            return await _dbContext.tbl_student.ToListAsync();
+            return await _dbContext.tbl_student_image.ToListAsync();
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Student>> GetStudent(int id)
+        public async Task<ActionResult<StudentImage>> GetStudentImage(int id)
         {
-            if (_dbContext.tbl_student == null)
+            if (_dbContext.tbl_student_image == null)
             {
                 return NotFound();
             }
-            var student = await _dbContext.tbl_student.FindAsync(id);
-            if (student == null)
+            var image = await _dbContext.tbl_student_image.FindAsync(id);
+            if (image == null)
             {
                 return NotFound();
             }
-            return student;
+            return image;
         }
-
-        [HttpPost("addStudent")]
+        /**
+        [HttpPost("addImage")]
         public async Task<IActionResult> AddStudentAsync([FromBody] StudentCredentials credentials)
         {
-            
+
             Student student = new Student
             {
                 Name = credentials.name,
                 Surname = credentials.surname,
                 Gender = credentials.gender
             };
-            
+
             if (student.Gender != 'M' &&
                 student.Gender != 'F' &&
                 student.Gender != 'E' &&
@@ -62,13 +61,12 @@ namespace littleviewservice.Controllers
             await _dbContext.SaveChangesAsync();
             return Ok("Inserted!");
         }
-
+        
         public class StudentCredentials
         {
             public string name { get; set; }
             public string surname { get; set; }
             public char gender { get; set; }
-            public string blood_type { get; set; }
-        }
+        }**/
     }
 }

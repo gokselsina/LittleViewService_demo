@@ -9,6 +9,7 @@ namespace littleviewservice.Models
         public string Name { get; set; }
         public string Surname { get; set; }
         public char Gender { get; set; }
+        public string Blood_type { get; set; }
 
         //public string Img { get; set; }
     }
