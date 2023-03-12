@@ -50,7 +50,15 @@ namespace littleviewservice.Controllers
             {
                 Name = credentials.name,
                 Surname = credentials.surname,
-                Gender = credentials.gender
+                Gender = credentials.gender,
+                Blood_type = credentials.blood_type,
+                Birth_date = credentials.birth_date,
+                Parent_1 = credentials.parent_1,
+                Parent_number_1 = credentials.parent_1,
+                Parent_2= credentials.parent_2,
+                Parent_number_2 = credentials.parent_2,
+                Address = credentials.address,
+                Notes = credentials.notes
             };
             
             if (student.Gender != 'M' &&
@@ -68,7 +76,14 @@ namespace littleviewservice.Controllers
             public string name { get; set; }
             public string surname { get; set; }
             public char gender { get; set; }
-            public string blood_type { get; set; }
+            public string blood_type { get; set; } = null;
+            public DateTime birth_date { get; set; } = DateTime.MinValue;
+            public string parent_1 { get; set; } = null;
+            public string parent_number_1 { get; set; } = null;
+            public string parent_2 { get; set; } = null;
+            public string parent_number_2 { get; set; } = null;
+            public string address { get; set; } = null;
+            public string notes { get; set; } = null;
         }
     }
 }
