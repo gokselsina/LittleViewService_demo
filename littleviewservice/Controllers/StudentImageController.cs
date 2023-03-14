@@ -19,21 +19,21 @@ namespace littleviewservice.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<StudentImage>>> GetStudent()
         {
-            if (_dbContext.tbl_student_image == null)
+            if (_dbContext.vw_profile_image == null)
             {
                 return NotFound();
             }
-            return await _dbContext.tbl_student_image.ToListAsync();
+            return await _dbContext.vw_profile_image.ToListAsync();
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<StudentImage>> GetStudentImage(int id)
         {
-            if (_dbContext.tbl_student_image == null)
+            if (_dbContext.vw_profile_image == null)
             {
                 return NotFound();
             }
-            var image = await _dbContext.tbl_student_image.FindAsync(id);
+            var image = await _dbContext.vw_profile_image.FindAsync(id);
             if (image == null)
             {
                 return NotFound();

@@ -20,21 +20,21 @@ namespace littleviewservice.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Student>>> GetStudent()
         {
-            if (_dbContext.tbl_student == null)
+            if (_dbContext.vw_students == null)
             {
                 return NotFound();
             }
-            return await _dbContext.tbl_student.ToListAsync();
+            return await _dbContext.vw_students.ToListAsync();
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<Student>> GetStudent(int id)
         {
-            if (_dbContext.tbl_student == null)
+            if (_dbContext.vw_students == null)
             {
                 return NotFound();
             }
-            var student = await _dbContext.tbl_student.FindAsync(id);
+            var student = await _dbContext.vw_students.FindAsync(id);
             if (student == null)
             {
                 return NotFound();
@@ -46,7 +46,7 @@ namespace littleviewservice.Controllers
         public async Task<IActionResult> AddStudentAsync([FromBody] StudentCredentials credentials)
         {
             
-            Student student = new Student
+            StudentProfile student = new StudentProfile
             {
                 Name = credentials.name,
                 Surname = credentials.surname,
@@ -58,7 +58,8 @@ namespace littleviewservice.Controllers
                 Parent_2= credentials.parent_2,
                 Parent_number_2 = credentials.parent_2,
                 Address = credentials.address,
-                Notes = credentials.notes
+                Notes = credentials.notes,
+                Img = credentials.img
             };
             
             if (student.Gender != 'M' &&
@@ -76,14 +77,15 @@ namespace littleviewservice.Controllers
             public string name { get; set; }
             public string surname { get; set; }
             public char gender { get; set; }
-            public string blood_type { get; set; } = null;
+            public string blood_type { get; set; } = "";
             public DateTime birth_date { get; set; } = DateTime.MinValue;
-            public string parent_1 { get; set; } = null;
-            public string parent_number_1 { get; set; } = null;
-            public string parent_2 { get; set; } = null;
-            public string parent_number_2 { get; set; } = null;
-            public string address { get; set; } = null;
-            public string notes { get; set; } = null;
+            public string parent_1 { get; set; } = "";
+            public string parent_number_1 { get; set; } = "";
+            public string parent_2 { get; set; } = "";
+            public string parent_number_2 { get; set; } = "";
+            public string address { get; set; } = "";
+            public string notes { get; set; } = "";
+            public string img { get; set; } = "";
         }
     }
 }
