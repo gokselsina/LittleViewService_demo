@@ -40,6 +40,7 @@ namespace littleviewservice.Controllers
             }
             return image;
         }
+
         /**
         [HttpPost("addImage")]
         public async Task<IActionResult> AddStudentAsync([FromBody] StudentCredentials credentials)
