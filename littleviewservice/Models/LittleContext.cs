@@ -19,5 +19,6 @@ namespace littleviewservice.Models
         public DbSet<Student> vw_students { get; set; }
         public DbSet<StudentProfile> tbl_student { get; set; }
         public DbSet<StudentImage> vw_profile_image { get; set; }
+        public DbSet<Notification> tbl_notification { get; set; }
     }
 }
