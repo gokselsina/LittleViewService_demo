@@ -9,6 +9,7 @@ namespace littleviewservice.Models
         public string Text { get; set; }
         public int Send_from { get; set; }
         public int? Send_to { get; set; }
-        public DateTime? Send_date { get; set; } = DateTime.MinValue;
+        public bool Unread { get; set; }
+        public DateTime? Send_date { get; set; } = DateTime.MinValue; 
     }
 }
