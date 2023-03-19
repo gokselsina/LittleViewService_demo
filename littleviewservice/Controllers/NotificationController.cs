@@ -27,20 +27,31 @@ namespace littleviewservice.Controllers
             return await _dbContext.tbl_notification.ToListAsync();
         }
 
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Notification>> GetNotification(int id)
+        [HttpGet("{send_to}")]
+
+        public async Task<ActionResult<List<Notification>>> GetNotification(int send_to)
         {
-            if (_dbContext.tbl_notification == null)
+            var notiList = await _dbContext.tbl_notification
+            .Where(n => n.Send_to == send_to || n.Send_to == null)
+            .OrderByDescending(n => n.Send_date)  // id sütununa göre tersine sırala
+            .ToListAsync();
+
+            if (notiList == null || !notiList.Any())
             {
                 return NotFound();
             }
-            var noti = await _dbContext.tbl_notification.FindAsync(id);
-            if (noti == null)
-            {
-                return NotFound();
-            }
-            return noti;
+
+            return notiList;
+            
         }
+
+        [HttpGet("countUnreadNotifications/{send_to}")]
+        public async Task<IActionResult> CountUnreadNotificationsAsync(int send_to)
+        {
+            int count = await _dbContext.tbl_notification.CountAsync(n => n.Send_to == send_to && n.Unread);
+            return Ok(count);
+        }
+
         /**
         [HttpPost("addNotification")]
         public async Task<IActionResult> AddStudentAsync([FromBody] StudentCredentials credentials)
@@ -72,44 +83,22 @@ namespace littleviewservice.Controllers
             return Ok("Inserted!");
         }
         **/
-        /**
-        [HttpPut("updateStudent/{id}")]
-        public async Task<IActionResult> UpdateStudentAsync(int id, [FromBody] StudentCredentials credentials)
+
+        [HttpPut("markAsRead/{send_to}")]
+        public async Task<IActionResult> UpdateNotificationAsync(int send_to)
         {
-            var student = await _dbContext.tbl_student.FindAsync(id);
-            if (student == null) return NotFound();
-
-            student.Name = credentials.name;
-            student.Surname = credentials.surname;
-            student.Gender = credentials.gender;
-            student.Blood_type = credentials.blood_type;
-            student.Birth_date = credentials.birth_date;
-            student.Parent_1 = credentials.parent_1;
-            student.Parent_number_1 = credentials.parent_number_1;
-            student.Parent_2 = credentials.parent_2;
-            student.Parent_number_2 = credentials.parent_number_2;
-            student.Address = credentials.address;
-            student.Notes = credentials.notes;
-            student.Img = credentials.img;
-
-            if (student.Gender != 'M' &&
-                student.Gender != 'F' &&
-                student.Gender != 'E' &&
-                student.Gender != 'K') return NotFound();
-
-            _dbContext.tbl_student.Update(student);
+            var notifications = await _dbContext.tbl_notification.Where(n => n.Send_to == send_to).ToListAsync();
+            if (notifications == null || notifications.Count == 0)
+            {
+                return NotFound();
+            }
+            foreach (var noti in notifications)
+            {
+                noti.Unread = false;
+                _dbContext.tbl_notification.Update(noti);
+            }
             await _dbContext.SaveChangesAsync();
             return Ok("Updated!");
-        }
-        **/
-        public class NotifcationCredentials
-        {
-            public int? ID { get; set; }
-            public string Text { get; set; }
-            public int Send_from { get; set; }
-            public int? Send_to { get; set; }
-            public DateTime? Send_date { get; set; } = DateTime.MinValue;
-            public bool Unread { get; set; }
         }
     }
 }
