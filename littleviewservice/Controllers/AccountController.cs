@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
 namespace littleviewservice.Controllers
 {
@@ -26,18 +27,28 @@ namespace littleviewservice.Controllers
             return await _dbContext.tbl_account.ToListAsync();
         }
 
+
         [HttpPost("login")]
-        public IActionResult Login([FromBody] UserCredentials credentials)
+        public async Task<ActionResult<Account>> Login([FromBody] LoginRequest request)
         {
-            var user = _dbContext.tbl_account.SingleOrDefault(a => a.username == credentials.username);
+            var account = await _dbContext.tbl_account
+                .FromSqlRaw("SELECT * FROM tbl_account WHERE Username = {0} COLLATE Latin1_General_CS_AS AND Password = {1} COLLATE Latin1_General_CS_AS", request.Username, request.Password)
+                .FirstOrDefaultAsync();
 
-            if (user == null || user.password != credentials.password)
+            if (account == null)
             {
-                return BadRequest("Invalid username or password");
+                return NotFound();
             }
-            return Ok(user.account_type);
 
+            return account;
         }
+
+        public class LoginRequest
+        {
+            public string Username { get; set; }
+            public string Password { get; set; }
+        }
+
         public class UserCredentials
         {
             public string username { get; set; }

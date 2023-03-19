@@ -28,7 +28,6 @@ namespace littleviewservice.Controllers
         }
 
         [HttpGet("{send_to}")]
-
         public async Task<ActionResult<List<Notification>>> GetNotification(int send_to)
         {
             var notiList = await _dbContext.tbl_notification
