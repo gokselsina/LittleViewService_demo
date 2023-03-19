@@ -17,16 +17,6 @@ namespace littleviewservice.Controllers
             _dbContext = dbContext;
         }
 
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Account>>> GetAccount()
-        {
-            if (_dbContext.tbl_account == null)
-            {
-                return NotFound();
-            }
-            return await _dbContext.tbl_account.ToListAsync();
-        }
-
 
         [HttpPost("login")]
         public async Task<ActionResult<Account>> Login([FromBody] LoginRequest request)
@@ -47,12 +37,6 @@ namespace littleviewservice.Controllers
         {
             public string Username { get; set; }
             public string Password { get; set; }
-        }
-
-        public class UserCredentials
-        {
-            public string username { get; set; }
-            public string password { get; set; }
         }
     }
 }
