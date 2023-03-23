@@ -32,7 +32,8 @@ namespace littleviewservice.Controllers
         {
             var notiList = await _dbContext.tbl_notification
             .Where(n => n.Send_to == send_to || n.Send_to == null)
-            .OrderByDescending(n => n.Send_date)  // id sütununa göre tersine sırala
+            .OrderByDescending(n => n.Send_date)  // Send_date sütununa göre tersine sırala
+            .ThenByDescending(n => n.Unread) // Unread sütununa göre tersine sırala
             .ToListAsync();
 
             if (notiList == null || !notiList.Any())

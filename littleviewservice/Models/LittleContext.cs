@@ -21,5 +21,7 @@ namespace littleviewservice.Models
         public DbSet<StudentImage> vw_profile_image { get; set; }
         public DbSet<Notification> tbl_notification { get; set; }
         public DbSet<Activity> tbl_activity { get; set; }
+        public DbSet<Lesson> tbl_weekly_program { get; set; }
+        public DbSet<Food> tbl_food_list { get; set; }
     }
 }
