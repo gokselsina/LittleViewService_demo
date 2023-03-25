@@ -27,6 +27,16 @@ namespace littleviewservice.Controllers
             return await _dbContext.vw_students.ToListAsync();
         }
 
+        [HttpGet("Attendance")]
+        public async Task<ActionResult<IEnumerable<StudentAttendance>>> GetAttendance()
+        {
+            if (_dbContext.view_attendance == null)
+            {
+                return NotFound();
+            }
+            return await _dbContext.view_attendance.ToListAsync();
+        }
+
         [HttpGet("{id}")]
         public async Task<ActionResult<Student>> GetStudent(int id)
         {
