@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Globalization;
 using static littleviewservice.Controllers.AccountController;
 
 namespace littleviewservice.Controllers
@@ -36,6 +37,51 @@ namespace littleviewservice.Controllers
             }
             return await _dbContext.view_attendance.ToListAsync();
         }
+
+        [HttpGet("AttendanceDetail")]
+        public async Task<ActionResult<IEnumerable<Attendance>>> GetAttendanceDetail()
+        {
+            if (_dbContext.tbl_attendance == null)
+            {
+                return NotFound();
+            }
+            return await _dbContext.tbl_attendance.ToListAsync();
+        }
+
+        [HttpPost("Attendance/addAttendance")]
+        public async Task<IActionResult> AddStudentAsync([FromBody] AttendanceCredentials credentials)
+        {
+
+            Attendance student = new Attendance
+            {
+                Student_id = credentials.Student_id,
+                Status = credentials.Status,
+                Date = credentials.Date
+            };
+
+            _dbContext.tbl_attendance.Add(student);
+            await _dbContext.SaveChangesAsync();
+            return Ok("Inserted!");
+        }
+
+        [HttpDelete("Attendance/resetAttendance/{date}")]
+        public IActionResult DeleteRecordsByDate(DateTime date)
+        {
+            var records = _dbContext.tbl_attendance
+                .Where(r => r.Date.Date == date.Date)
+                .ToList();
+
+            if (records.Count == 0)
+            {
+                return NotFound();
+            }
+
+            _dbContext.tbl_attendance.RemoveRange(records);
+            _dbContext.SaveChanges();
+
+            return NoContent();
+        }
+
 
         [HttpGet("{id}")]
         public async Task<ActionResult<Student>> GetStudent(int id)
@@ -125,6 +171,13 @@ namespace littleviewservice.Controllers
             public string address { get; set; } = "";
             public string notes { get; set; } = "";
             public string img { get; set; } = "";
+        }
+
+        public class AttendanceCredentials
+        {
+            public int Student_id { get; set; }
+            public int Status { get; set; }
+            public DateTime Date { get; set; }
         }
     }
 }

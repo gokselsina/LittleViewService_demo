@@ -52,37 +52,23 @@ namespace littleviewservice.Controllers
             return Ok(count);
         }
 
-        /**
         [HttpPost("addNotification")]
-        public async Task<IActionResult> AddStudentAsync([FromBody] StudentCredentials credentials)
+        public async Task<IActionResult> AddStudentAsync([FromBody] NotificationCredentials credentials)
         {
-            
-            StudentProfile Notification = new StudentProfile
-            {
-                Name = credentials.name,
-                Surname = credentials.surname,
-                Gender = credentials.gender,
-                Blood_type = credentials.blood_type,
-                Birth_date = credentials.birth_date,
-                Parent_1 = credentials.parent_1,
-                Parent_number_1 = credentials.parent_1,
-                Parent_2= credentials.parent_2,
-                Parent_number_2 = credentials.parent_2,
-                Address = credentials.address,
-                Notes = credentials.notes,
-                Img = credentials.img
-            };
-            
-            if (student.Gender != 'M' &&
-                student.Gender != 'F' &&
-                student.Gender != 'E' &&
-                student.Gender != 'K') return NotFound();
 
-            _dbContext.tbl_student.Add(student);
+            Notification notification = new Notification
+            {
+                Text = credentials.Text,
+                Send_from = credentials.Send_from,
+                Send_to = credentials.Send_to,
+                Send_date = credentials.Send_date,
+                Unread = true
+            };
+
+            _dbContext.tbl_notification.Add(notification);
             await _dbContext.SaveChangesAsync();
             return Ok("Inserted!");
         }
-        **/
 
         [HttpPut("markAsRead/{send_to}")]
         public async Task<IActionResult> UpdateNotificationAsync(int send_to)
@@ -99,6 +85,14 @@ namespace littleviewservice.Controllers
             }
             await _dbContext.SaveChangesAsync();
             return Ok("Updated!");
+        }
+
+        public class NotificationCredentials
+        {
+            public string Text { get; set; }
+            public int Send_from { get; set; }
+            public int? Send_to { get; set; }
+            public DateTime? Send_date { get; set; } = DateTime.MinValue;
         }
     }
 }
