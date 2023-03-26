@@ -11,5 +11,6 @@ namespace littleviewservice.Models
         public int? Send_to { get; set; }
         public DateTime? Send_date { get; set; } = DateTime.MinValue; 
         public bool Unread { get; set; }
+        public bool Alarm { get; set; }
     }
 }

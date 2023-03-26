@@ -24,5 +24,6 @@ namespace littleviewservice.Models
         public DbSet<Lesson> tbl_weekly_program { get; set; }
         public DbSet<Food> tbl_food_list { get; set; }
         public DbSet<StudentAttendance> view_attendance { get; set; }
+        public DbSet<Attendance> tbl_attendance { get; set; }
     }
 }
