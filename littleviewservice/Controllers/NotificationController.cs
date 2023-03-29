@@ -81,7 +81,6 @@ namespace littleviewservice.Controllers
                 Send_to = credentials.Send_to,
                 Send_date = credentials.Send_date,
                 Unread = true,
-                Alarm = true
             };
 
             _dbContext.tbl_notification.Add(notification);
