@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using static littleviewservice.Controllers.NotificationController;
 
 namespace littleviewservice.Controllers
 {
@@ -30,5 +31,28 @@ namespace littleviewservice.Controllers
 
             return announcementList;
         }
+
+        [HttpPost("addAnnouncement")]
+        public async Task<IActionResult> AddStudentAsync([FromBody] AnnouncementCredentials credentials)
+        {
+
+            Announcement announcement = new Announcement
+            {
+                Text = credentials.Text,
+                Send_from = credentials.Send_from,
+                Send_date = credentials.Send_date
+            };
+
+            _dbContext.tbl_announcement.Add(announcement);
+            await _dbContext.SaveChangesAsync();
+            return Ok("Inserted!");
+        }
+    }
+
+    public class AnnouncementCredentials
+    {
+        public string Text { get; set; }
+        public int Send_from { get; set; }
+        public DateTime? Send_date { get; set; } = DateTime.MinValue;
     }
 }
