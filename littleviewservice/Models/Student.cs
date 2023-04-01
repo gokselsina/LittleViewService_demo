@@ -17,6 +17,7 @@ namespace littleviewservice.Models
         public string? Parent_number_2 { get; set; } = null;
         public string? Address { get; set; } = null;
         public string? Notes { get; set; } = null;
+        public int? Parent_id { get; set; } = null;
 
         //public string Img { get; set; }
     }

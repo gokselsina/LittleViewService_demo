@@ -98,6 +98,20 @@ namespace littleviewservice.Controllers
             return student;
         }
 
+
+        [HttpGet("Parent/{parent_id}")]
+        public async Task<ActionResult<IEnumerable<Student>>> GetParentStudent(int parent_id)
+        {
+            var students = await _dbContext.vw_students.Where(s => s.Parent_id == parent_id).ToListAsync();
+
+            if (students == null)
+            {
+                return NotFound();
+            }
+
+            return students;
+        }
+
         [HttpPost("addStudent")]
         public async Task<IActionResult> AddStudentAsync([FromBody] StudentCredentials credentials)
         {
