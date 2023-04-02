@@ -100,9 +100,9 @@ namespace littleviewservice.Controllers
 
 
         [HttpGet("Parent/{parent_id}")]
-        public async Task<ActionResult<IEnumerable<Student>>> GetParentStudent(int parent_id)
+        public async Task<ActionResult<IEnumerable<ParentStudent>>> GetParentStudent(int parent_id)
         {
-            var students = await _dbContext.vw_students.Where(s => s.Parent_id == parent_id).ToListAsync();
+            var students = await _dbContext.view_parent_student.Where(s => s.Parent_id == parent_id).ToListAsync();
 
             if (students == null)
             {

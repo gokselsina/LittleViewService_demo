@@ -33,6 +33,19 @@ namespace littleviewservice.Controllers
             return lessonList;
 
         }
+
+        [HttpGet("{class_id}")]
+        public async Task<ActionResult<IEnumerable<Lesson>>> GetClassLesson(int class_id)
+        {
+            var lessonList = await _dbContext.tbl_weekly_program.Where(s => s.Class_id == class_id).ToListAsync();
+            if (lessonList == null || !lessonList.Any())
+            {
+                return NotFound();
+            }
+
+            return lessonList;
+
+        }
         /**
         [HttpPost("addActivity")]
         public async Task<IActionResult> AddActivityAsync([FromBody] ActivityCredentials credentials)
