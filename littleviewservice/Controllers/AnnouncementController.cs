@@ -20,8 +20,9 @@ namespace littleviewservice.Controllers
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Announcement>>> GetAnnouncements()
-        {
+        { 
             var announcementList = await _dbContext.tbl_announcement
+            .OrderByDescending(n => n.Send_date)
             .ToListAsync();
 
             if (announcementList == null || !announcementList.Any())
@@ -40,6 +41,7 @@ namespace littleviewservice.Controllers
             {
                 Text = credentials.Text,
                 Send_from = credentials.Send_from,
+                Send_from_name = credentials.Send_from_name,
                 Send_date = credentials.Send_date
             };
 
@@ -53,6 +55,7 @@ namespace littleviewservice.Controllers
     {
         public string Text { get; set; }
         public int Send_from { get; set; }
+        public string Send_from_name { get; set; }
         public DateTime? Send_date { get; set; } = DateTime.MinValue;
     }
 }

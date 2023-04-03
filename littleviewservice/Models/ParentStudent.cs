@@ -10,6 +10,7 @@ namespace littleviewservice.Models
         public string Surname { get; set; }
         public char? Gender { get; set; }
         public int? Parent_id { get; set; } = null;
+        public int? Class_id { get; set; } = null;
         public string? Img { get; set; } = null;
     }
 }
