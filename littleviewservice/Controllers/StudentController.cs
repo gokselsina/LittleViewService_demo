@@ -48,6 +48,41 @@ namespace littleviewservice.Controllers
             return await _dbContext.tbl_attendance.ToListAsync();
         }
 
+        [HttpGet("Attendance/GetDailyAttendance/{student_id}")]
+        public async Task<ActionResult<List<Attendance>>> GetDailyAttendance(int student_id)
+        {
+            var attendanceList = await _dbContext.tbl_attendance
+            .Where(n => n.Student_id == student_id)
+            .OrderByDescending(n => n.Date)  // Send_date sütununa göre tersine sırala
+            .ToListAsync();
+
+            if (attendanceList == null || !attendanceList.Any())
+            {
+                return NotFound();
+            }
+
+            return attendanceList;
+
+        }
+
+        [HttpGet("Attendance/GetAttendanceReport/{student_id}")]
+        public async Task<ActionResult<List<AttendanceReport>>> GetAttendanceReport(int student_id)
+        {
+            var attendanceList = await _dbContext.view_attendance_report
+            .Where(n => n.Student_id == student_id)
+            .OrderByDescending(n => n.Year)  // Date sütununa göre tersine sırala
+            .ThenByDescending(n => n.Month) // Month sütununa göre tersine sırala
+            .ToListAsync();
+
+            if (attendanceList == null || !attendanceList.Any())
+            {
+                return NotFound();
+            }
+
+            return attendanceList;
+
+        }
+
         [HttpPost("Attendance/addAttendance")]
         public async Task<IActionResult> AddStudentAsync([FromBody] AttendanceCredentials credentials)
         {
