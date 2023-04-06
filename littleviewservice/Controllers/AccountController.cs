@@ -17,6 +17,18 @@ namespace littleviewservice.Controllers
             _dbContext = dbContext;
         }
 
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Account>>> GetAccount()
+        {
+            var accountList = await _dbContext.tbl_account.ToListAsync();
+
+            if (accountList == null || !accountList.Any())
+            {
+                return NotFound();
+            }
+
+            return accountList;
+        }
 
         [HttpPost("login")]
         public async Task<ActionResult<Account>> Login([FromBody] LoginRequest request)
