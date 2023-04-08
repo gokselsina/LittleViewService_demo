@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using static littleviewservice.Controllers.ActivityController;
 
 namespace littleviewservice.Controllers
 {
@@ -18,7 +19,7 @@ namespace littleviewservice.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Account>>> GetAccount()
+        public async Task<ActionResult<IEnumerable<Account>>> GetAccounts()
         {
             var accountList = await _dbContext.tbl_account.ToListAsync();
 
@@ -28,6 +29,40 @@ namespace littleviewservice.Controllers
             }
 
             return accountList;
+        }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Account>> GetAccount(int id)
+        {
+
+            if (_dbContext.tbl_account == null)
+            {
+                return NotFound();
+            }
+            var account = await _dbContext.tbl_account.FindAsync(id);
+            if (account == null)
+            {
+                return NotFound();
+            }
+            return account;
+
+        }
+
+        [HttpPost("addAccount")]
+        public async Task<IActionResult> AddAccountAsync([FromBody] AccountCredentials credentials)
+        {
+            Account acc = new Account
+            {
+                username = credentials.Username,
+                password = credentials.Password,
+                name = credentials.Name,
+                surname = credentials.Surname,
+                account_type = credentials.Account_type
+            };
+
+            _dbContext.tbl_account.Add(acc);
+            await _dbContext.SaveChangesAsync();
+            return Ok("Inserted!");
         }
 
         [HttpPost("login")]
@@ -49,6 +84,15 @@ namespace littleviewservice.Controllers
         {
             public string Username { get; set; }
             public string Password { get; set; }
+        }
+
+        public class AccountCredentials
+        {
+            public string Username { get; set; }
+            public string Password { get; set; }
+            public string Name { get; set; }
+            public string Surname { get; set; }
+            public int Account_type { get; set; }
         }
     }
 }
