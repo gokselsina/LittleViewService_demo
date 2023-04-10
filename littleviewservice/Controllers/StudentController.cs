@@ -206,6 +206,23 @@ namespace littleviewservice.Controllers
             return Ok("Updated!");
         }
 
+        [HttpPut("updateParentId/{id}/{parent_id}")]
+        public async Task<IActionResult> UpdateParentIdAsync(int id, int parent_id)
+        {
+            var student = await _dbContext.tbl_student.Where(n => n.ID == id).ToListAsync();
+            if (student == null || student.Count == 0)
+            {
+                return NotFound();
+            }
+            foreach (var std in student)
+            {
+                std.Parent_id = parent_id;
+                _dbContext.tbl_student.Update(std);
+            }
+            await _dbContext.SaveChangesAsync();
+            return Ok("Updated!");
+        }
+
         public class StudentCredentials
         {
             public string name { get; set; }
