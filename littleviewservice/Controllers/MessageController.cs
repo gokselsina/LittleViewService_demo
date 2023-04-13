@@ -18,22 +18,22 @@ namespace littleviewservice.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Message>>> GetNotification()
+        public async Task<ActionResult<IEnumerable<MyMessageList>>> GetMessages()
         {
-            if (_dbContext.tbl_notification == null)
+            if (_dbContext.view_my_messages == null)
             {
                 return NotFound();
             }
-            return await _dbContext.tbl_message.ToListAsync();
+            return await _dbContext.view_my_messages.ToListAsync();
         }
 
         [HttpGet("{send_to}")]
-        public async Task<ActionResult<List<Message>>> GetMessage(int send_to)
+        public async Task<ActionResult<List<MyMessageList>>> GetMessagesBySendTo(int send_to)
         {
-            var msgList = await _dbContext.tbl_message
-            .Where(n => n.Send_to == send_to || n.Send_to == null)
+            var msgList = await _dbContext.view_my_messages
+            .Where(n => n.Send_to == send_to || n.Send_to == null )
             .OrderByDescending(n => n.Send_date)  // Send_date sütununa göre tersine sırala
-            .ThenByDescending(n => n.Unread) // Unread sütununa göre tersine sırala
+            //.ThenByDescending(n => n.Unread) // Unread sütununa göre tersine sırala
             .ToListAsync();
 
             if (msgList == null || !msgList.Any())
@@ -45,6 +45,25 @@ namespace littleviewservice.Controllers
             
         }
 
+        [HttpGet("{send_from}/{send_to}")]
+        public async Task<ActionResult<List<ChatMessageList>>> GetChat(int send_from, int send_to)
+        {
+            var msgList = await _dbContext.tbl_message
+            .Where(n => (n.Send_to == send_to && n.Send_from == send_from) || (n.Send_to == send_from && n.Send_from == send_to))
+            .OrderBy(n => n.Send_date)  // Send_date sütununa göre tersine sırala
+            //.ThenByDescending(n => n.Unread) // Unread sütununa göre tersine sırala
+            .ToListAsync();
+
+            if (msgList == null || !msgList.Any())
+            {
+                return NotFound();
+            }
+
+            return msgList;
+
+        }
+
+        /**
         [HttpGet("countUnreadMessages/{send_to}")]
         public async Task<IActionResult> CountUnreadMessagesAsync(int send_to)
         {
@@ -52,23 +71,7 @@ namespace littleviewservice.Controllers
             return Ok(count);
         }
 
-        [HttpPost("sendMessage")]
-        public async Task<IActionResult> SendMessage([FromBody] MessageCredentials credentials)
-        {
-
-            Message msg = new Message
-            {
-                Text = credentials.Text,
-                Send_from = credentials.Send_from,
-                Send_to = credentials.Send_to,
-                Send_date = credentials.Send_date,
-                Unread = true,
-            };
-
-            _dbContext.tbl_message.Add(msg);
-            await _dbContext.SaveChangesAsync();
-            return Ok("Inserted!");
-        }
+       
 
         
         [HttpGet("Alarms/{send_to}")]
@@ -121,7 +124,7 @@ namespace littleviewservice.Controllers
             }
             await _dbContext.SaveChangesAsync();
             return Ok("Updated!");
-        }
+        }**/
 
         public class MessageCredentials
         {
