@@ -20,7 +20,7 @@ namespace littleviewservice.Models
         public DbSet<StudentProfile> tbl_student { get; set; }
         public DbSet<StudentImage> vw_profile_image { get; set; }
         public DbSet<Notification> tbl_notification { get; set; }
-        public DbSet<Message> tbl_message { get; set; }
+        public DbSet<MyMessageList> view_my_messages { get; set; }
         public DbSet<Activity> tbl_activity { get; set; }
         public DbSet<Lesson> tbl_weekly_program { get; set; }
         public DbSet<Food> tbl_food_list { get; set; }
